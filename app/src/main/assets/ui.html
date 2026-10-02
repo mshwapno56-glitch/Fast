@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root { --bg:#fff; --fg:#111; --in:#eef0f3; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#1c1c1e; --fg:#eee; --in:#2c2c2e; } }
+  html, body { margin:0; height:100%; background:var(--bg); color:var(--fg); font-family:sans-serif; overflow:hidden; }
+  .bar { display:flex; align-items:center; gap:2px; height:56px; padding:0 6px; box-sizing:border-box; }
+  button { background:none; border:0; color:var(--fg); font-size:22px; width:40px; height:40px; border-radius:20px; flex:none; }
+  button:active { background:var(--in); }
+  input { flex:1; min-width:0; height:40px; border:0; border-radius:20px; padding:0 14px; background:var(--in); color:var(--fg); font-size:15px; outline:none; }
+  #p { position:fixed; left:0; bottom:0; height:3px; width:0; background:#3b82f6; transition:width .2s; }
+</style>
+</head>
+<body>
+<div class="bar">
+  <button onclick="Android.back()">‹</button>
+  <button onclick="Android.forward()">›</button>
+  <input id="u" type="text" inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Search or enter address">
+  <button onclick="Android.reload()">⟳</button>
+</div>
+<div id="p"></div>
+<script>
+  var u = document.getElementById('u');
+  var p = document.getElementById('p');
+  u.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { Android.go(u.value); u.blur(); }
+  });
+  u.addEventListener('focus', function () { u.select(); });
+  function setUrl(v) { if (document.activeElement !== u) u.value = v; }
+  function setProgress(n) {
+    p.style.opacity = 1;
+    p.style.width = n + '%';
+    if (n >= 100) setTimeout(function () { p.style.opacity = 0; p.style.width = '0'; }, 250);
+  }
+</script>
+</body>
+</html>
